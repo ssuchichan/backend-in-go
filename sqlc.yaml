@@ -1,0 +1,8 @@
+version: 1
+packages:
+    - path: "db/sqlc"
+      name: "sqlc"
+      engine: "postgresql"
+      schema: "db/schema.sql"
+      queries: "db/query/account.sql"
+      emit_json_tags: true
