@@ -1,1 +1,1 @@
-package sqlc
+package db
