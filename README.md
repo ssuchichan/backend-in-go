@@ -44,4 +44,35 @@ migrate -path db/migration -database "postgresql://root:csq2400306@localhost:543
 * Very fast & easy to use.
 * Automatic code generation.
 * Catch SQL query errors before generating codes.
+## DB Transaction
+### What is a db transaction?
+* A single unit of work.
+* Often made up of multiple db operations.
+### Example
+* Create a transfer record with amount = 10.
+* Create an account entry for account1 with account = -10.
+* Create an account entry for account2 with account = +10.
+* Subtract 10 from the balance of account1.
+* Add 10 to the balance of account2.
+### Why do we need db transaction?
+* To provide a reliable and consistent unit of work, even in case of system failure.
+* To provide a isolation between programs that access the database concurrently.
+### ACID Property
+* Atomicity(A)  
+Either all operations complete successfully or the transaction fails and the db is unchanged.
+* Consistency(C)  
+The db state must be valid after the transaction. All constraints must be satisfied.
+* Isolation(I)  
+Concurrent transactions must not affect each other.
+* Durability(D)  
+Data written by a successful transaction must be recorded in persistent storage.
+### How to run SQL tx?
+```
+begin;
+...
+commit;
 
+begin;
+...
+rollback;
+```

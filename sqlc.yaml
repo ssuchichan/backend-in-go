@@ -4,5 +4,5 @@ packages:
       name: "sqlc"
       engine: "postgresql"
       schema: "db/schema.sql"
-      queries: "db/query/account.sql"
+      queries: "db/query/"
       emit_json_tags: true
