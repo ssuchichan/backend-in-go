@@ -76,3 +76,38 @@ begin;
 ...
 rollback;
 ```
+## Transaction Isolation Level（事务隔离等级）
+所有数据库都必须满足ACID性质。`Isolation(I)`就是其中的一条性质。
+### Read Phenomena（读现象）
+* Dirty Read（脏读）  
+A transaction reads data written by other concurrent uncommitted transaction.
+* Non-repeatable Read（不可重复读）  
+A transaction reads the same row twice and sees different value because it has been modified by other committed transaction.
+* Phantom Read（幻读）  
+A transaction re-executes q query to find rows that satisfy a condition and sees a different set of rows, due to changes by other committed transaction.
+* Serialization Anomaly（序列化异常）  
+The result of a group of concurrent committed transactions is impossible to achieve if we try to run them sequentially in any order without overlapping.
+### 4 Standard Isolation Levels
+* Read Uncommitted  
+Can see data written by uncommitted transaction.
+* Read Committed  
+Only see data written by committed transaction.
+* Repeatable Read  
+Same read query always returns same result.
+* Serializable  
+Can achieve same result if execute transactions serially in some order instead of concurrency.
+### Isolation Levels in MySQL
+|                       | Read Uncommitted | Read Committed | Repeatable Read | Serializable |
+|-----------------------|------------------|----------------|-----------------|--------------|
+| Dirty Read            | ️✅               | ❌              | ❌               | ❌            |
+| Non-repeatable Read   | ️✅               | ✅              | ❌               | ❌            |
+| Phantom Read          | ️✅               | ✅              | ❌               | ❌            |
+| Serialization Anomaly | ️✅               | ✅              | ️✅              | ❌            |
+### Isolation Levels in PostgresSQL
+|                       | Read Uncommitted | Read Committed | Repeatable Read | Serializable |
+|-----------------------|------------------|----------------|-----------------|--------------|
+| Dirty Read            | ️❌               | ❌              | ❌               | ❌            |
+| Non-repeatable Read   | ️✅               | ✅              | ❌               | ❌            |
+| Phantom Read          | ️✅               | ✅              | ❌               | ❌            |
+| Serialization Anomaly | ️✅               | ✅              | ️✅              | ❌            |
+
