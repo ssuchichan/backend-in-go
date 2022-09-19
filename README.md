@@ -111,3 +111,85 @@ Can achieve same result if execute transactions serially in some order instead o
 | Phantom Read          | ️✅               | ✅              | ❌               | ❌            |
 | Serialization Anomaly | ️✅               | ✅              | ️✅              | ❌            |
 
+## Git Action
+### Workflow
+![avatar](./doc/images/workflow.png)
+* Is an automated procedure.
+* Made up of 1+ jobs.
+* Triggered by events, scheduled, or manually.
+* Add `.yml` file to repository.
+#### Example
+```yaml
+name: build-and-test # workflow名字
+
+on: # 触发器
+  push:
+    # 向main push时触发
+    branches: [main] 
+  schedule:
+    # 每15分钟触发
+    - cron: '*/15 * * * *' 
+
+# 工作
+jobs:
+  build:
+    runs-on: ubuntu-latest
+```
+### Runner
+![avatar](./doc/images/runner.png)
+* Is a server to run the jobs.
+* Run 1 job at a time.
+* GitHub hosted or self-hosted.
+* Report progress, logs & result to github.
+### Job
+![avatar](./doc/images/job.png)
+* Is a set of steps execute on the same runner.
+* Normal jobs run in parallel.
+* Dependent jobs run serially.
+#### Example
+```yaml
+jobs:
+  # build job
+  build: 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Build server
+        run: ./build_server.sh
+  # test job
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - run: ./test_server.sh
+```
+### Step And Action
+![avatar](./doc/images/step-action.png)
+#### Step
+* Is an individual task.
+* Run serially within a job.
+* Contain 1+ actions.  
+#### Action
+* Is a standalone command.
+* Run serially within a step.
+* Can be reused.
+#### Example
+```yaml
+jobs:
+  build: 
+    runs-on: ubuntu-latest
+    steps:
+      # action1
+      - name: Check out code
+        uses: actions/checkout@v2
+      # action2
+      - name: Build server
+        run: ./build_server.sh
+```
+### Summary
+![avatar](./doc/images/summary.png)
+* Ways of triggering a workflow: event, scheduled or manually.
+* A workflow consists of one or multiple jobs. A job is composed of multiple steps. Each step can have 1 or more actions.
+* All jobs inside a workflow normally run in parallel, unless they depend on each other. Then in that case, they run serially.
+* Each job will be run separately by a specific runner. The runner will report progress, logs, and results of the jobs back to GitHub.
