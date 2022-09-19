@@ -21,7 +21,7 @@ func TestMain(m *testing.M) {
 	var err error
 	testDB, err = sql.Open(dbDriver, dbSource)
 	if err != nil {
-		log.Fatalln("connot open to db:", err)
+		log.Fatalln("cannot open to db:", err)
 	}
 	testQueries = New(testDB)
 	os.Exit(m.Run())
