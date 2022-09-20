@@ -1,6 +1,7 @@
 package db
 
 import (
+	"backend-in-go/util"
 	"database/sql"
 	"log"
 	"os"
@@ -12,16 +13,14 @@ import (
 var testQueries *Queries
 var testDB *sql.DB
 
-const (
-	dbDriver = "postgres"
-	dbSource = "postgresql://root:csq2400306@localhost:5432/bank?sslmode=disable"
-)
-
 func TestMain(m *testing.M) {
-	var err error
-	testDB, err = sql.Open(dbDriver, dbSource)
+	config, err := util.LoadConfig("../..")
 	if err != nil {
-		log.Fatalln("cannot open to db:", err)
+		log.Fatal("cannot load config:", err)
+	}
+	testDB, err = sql.Open(config.DBDriver, config.DBSource)
+	if err != nil {
+		log.Fatal("cannot open to db:", err)
 	}
 	testQueries = New(testDB)
 	os.Exit(m.Run())

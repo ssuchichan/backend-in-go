@@ -193,3 +193,20 @@ jobs:
 * A workflow consists of one or multiple jobs. A job is composed of multiple steps. Each step can have 1 or more actions.
 * All jobs inside a workflow normally run in parallel, unless they depend on each other. Then in that case, they run serially.
 * Each job will be run separately by a specific runner. The runner will report progress, logs, and results of the jobs back to GitHub.
+
+## Load Env Vars
+### Why file?
+For development, easily specify default configuration for local development and testing.
+### Why env vars?
+For deployment, easily override the default configurations when deploy with docker containers.
+### Why viper?
+* Find, load, unmarshal config file.  
+`json, toml, yaml, env, ini`
+* Read config from environment variables or flags.  
+Override existing values, set default values.
+* Read config from remote system.  
+Etcd, Consul.
+* Live watching and writing config file.  
+Reread changed file, save any modifications.
+### Notice
+如果环境变量和配置文件都配置两，viper会使用环境变量的值（即：环境变量的值会覆盖从配置文件中读到的值）。
