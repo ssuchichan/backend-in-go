@@ -200,13 +200,39 @@ For development, easily specify default configuration for local development and 
 ### Why env vars?
 For deployment, easily override the default configurations when deploy with docker containers.
 ### Why viper?
-* Find, load, unmarshal config file.  
+* Find, load, unmarshal config file  
 `json, toml, yaml, env, ini`
-* Read config from environment variables or flags.  
+* Read config from environment variables or flags  
 Override existing values, set default values.
-* Read config from remote system.  
+* Read config from remote system  
 Etcd, Consul.
-* Live watching and writing config file.  
+* Live watching and writing config file  
 Reread changed file, save any modifications.
 ### Notice
 如果环境变量和配置文件都配置两，viper会使用环境变量的值（即：环境变量的值会覆盖从配置文件中读到的值）。
+## Mock DB
+### Why mock database?
+* Independent tests  
+Isolate tests data to avoid conflicts.
+* Faster tests  
+Reduce a lot of time talking to the database.
+* 100% coverage  
+Easily setup edge cases: unexpected errors.
+### Is it good enough to est our API with a mock DB?
+Yes! Our real db store is already tested.
+### How to mock?
+Use fake DB: memory. Implement a fake version of DB: store data in memory.
+```golang
+type Store interface {
+	GetAccount(i int64) (Account, error)
+}
+type MemStore struct {
+	data map[int64]Account
+}
+func (store *MemStore) GetAccount(id int64) (Account, error) {
+	return store.data[id], nil
+}
+```
+Use DB stubs: `gomock`. Generate and build stubs that returns hard-coded values.
+
+
