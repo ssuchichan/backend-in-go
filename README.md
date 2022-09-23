@@ -234,5 +234,10 @@ func (store *MemStore) GetAccount(id int64) (Account, error) {
 }
 ```
 Use DB stubs: `gomock`. Generate and build stubs that returns hard-coded values.
+## Securely store password
+Hash it & store its hash value.
+![avatar](./doc/images/bcrypt1.png)
+![avatar](./doc/images/bcrypt2.png)
+
 
 
