@@ -238,6 +238,43 @@ Use DB stubs: `gomock`. Generate and build stubs that returns hard-coded values.
 Hash it & store its hash value.
 ![avatar](./doc/images/bcrypt1.png)
 ![avatar](./doc/images/bcrypt2.png)
-
-
+## Why PASETO is better than JWT?
+### Token-based Authentication
+### JSON Web Token - JWT
+### JWT Signing Algorithms
+#### Symmetric digital signature algorithm
+* The same secret key is used to sign & verify token.
+* For local use: internal services, where the secret key can be shared.
+* HS256, HS384, HS512
+  * HS256 = HMAC + SHA256
+  * HMAC: Hash-based Message Authentication Code
+  * SHA: Secure Hash Algorithm
+  * 256/384/512: number of output bits
+#### Asymmetric digital signature algorithm
+* The private key is used to sign token
+* The public key is used to verify token
+* For public use: internal services signs token, but external service need to verify it
+* RS256, RS384, RS512 || PS256, PS384, PS512 || ES256, ES384, ES512
+  * RS256 = RSA PKCSv1.5 + SHA256 [PCKS: Public-Key Cryptography Standards]
+  * PS256 = RSA PSS + SHA256 [PSS: Probabilistic Signature Scheme]
+  * ES256 = ECDSA + SHA256 [ECDSA: Elliptic Curve Digital Signature Algorithm]
+### What's the problem of JWT?
+#### Weak algorithms
+* Give developers too many algorithms to choose
+* Some algorithms are known to be vulnerable:
+  * RSA PKCS1.5: padding oracle attack
+  * ECDSA: invalid-curve attack
+#### Trivial Forgery
+* Set "alg" header to "none"
+* Set "alg" header "HS256" while the server normally verifies token with a RSA public key
+## Platform-Agnostic Security Tokens [PASETO]
+### Stronger algorithms
+* Developers don't have to choose the algorithm
+* Only need to select the version of PASETO
+* Each version has 1 strong cipher suite
+* Only 2 most recent PASETO versions are accepted
+### Non-trivial Forgery
+* No more "alg" header or "none" algorithm
+* Everything is authenticated
+* Encrypted payload for local user <symmetric key>
 
